@@ -1,4 +1,4 @@
-package com.se2.invoice.ProjectPeople;
+package com.se2.invoice.forms;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -23,10 +23,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-
-import com.se2.invoice.forms.Home;
-import com.se2.invoice.forms.dataConnectionObject;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.imageio.ImageIO;
@@ -46,7 +42,7 @@ public class ProjectPeople extends JFrame {
 	JTable table = new JTable();
 	DefaultTableModel model = new DefaultTableModel();
 	private BufferedImage backgroundImage;
-
+	private HashMap<String, String> projectNumberNameMap;
 
 	/**
 	 * Launch the application.
@@ -130,7 +126,6 @@ public class ProjectPeople extends JFrame {
 			        table.setModel(new DefaultTableModel(obj,header));
 			        
 				} catch (SQLException eq) {
-					// TODO Auto-generated catch block
 					eq.printStackTrace();
 				}
 				
@@ -139,9 +134,11 @@ public class ProjectPeople extends JFrame {
 		cmbProject.setBounds(302, 35, 173, 20);
 		contentPane.add(cmbProject);
 		
-		HashMap<String, String> projectNumberNameMap = new HashMap();
+		projectNumberNameMap = new HashMap();
 		
-		PreparedStatement pst2 = conn.prepareStatement("SELECT ProjectName as Name, ProjectNumber from project");
+		PreparedStatement pst2 = conn.prepareStatement("SELECT ProjectName as Name, ProjectNumber from project "
+				+ "WHERE ProjectManager=?");
+		pst2.setString(1, args[1]);
 		ResultSet rs2 = pst2.executeQuery();
 		String[] projectOptions = new String[1000];
 		int j=0;
@@ -213,8 +210,19 @@ public class ProjectPeople extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				String[] argNew = Arrays.copyOf(args, 4);
+				argNew[2]= (String)cmbProject.getSelectedItem();
+				argNew[3]= projectNumberNameMap.get((String)cmbProject.getSelectedItem());
 				
-				
+				AddDeveloper frame;
+				try {
+					frame = new AddDeveloper(argNew);
+					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+					frame.setVisible(true);
+					dispose();
+				} catch (SQLException | IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnNewButton.setBounds(314, 364, 132, 23);
@@ -232,7 +240,7 @@ public class ProjectPeople extends JFrame {
 						PreparedStatement pst = conn.prepareStatement("UPDATE `project_person` SET "
 								+ "`deactivated`=? WHERE PersonName=? AND ProjectNumber=?");
 						
-						System.out.println(projectNumberNameMap.get(cmbProject.getSelectedItem()));
+						//System.out.println(projectNumberNameMap.get(cmbProject.getSelectedItem()));
 						
 						pst.setBoolean(1, true);
 						pst.setString(2, (String)table.getModel().getValueAt(row, 0));
@@ -246,7 +254,6 @@ public class ProjectPeople extends JFrame {
 				        new ProjectPeople(args).setVisible(true);
 						
 					} catch (SQLException | IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
@@ -258,7 +265,9 @@ public class ProjectPeople extends JFrame {
 		JButton button_1 = new JButton("Back");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Home(args).setVisible(true);
+				Home frame = new Home(args);
+				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				frame.setVisible(true);
 				dispose();
 			}
 		});
