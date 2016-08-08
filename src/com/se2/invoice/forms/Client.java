@@ -1,4 +1,4 @@
-package com.se2.invoice.Client;
+package com.se2.invoice.forms;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -25,10 +25,6 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-
-import com.se2.invoice.forms.Home;
-import com.se2.invoice.forms.dataConnectionObject;
-
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ScrollPaneConstants;
 import java.awt.event.ActionListener;
@@ -95,9 +91,14 @@ public class Client extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				try {
-					String[] argNew = Arrays.copyOf(args, 2);
-					argNew[1]= "add";
-					new Client_Add(argNew).setVisible(true);
+					String[] argNew = Arrays.copyOf(args, 3);
+					argNew[2]= "add";
+					//new Client_Add(argNew).setVisible(true);
+					
+					Client_Add frame = new Client_Add(argNew);
+					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+					frame.setVisible(true);
+					dispose();
 					
 				} catch (Exception  ex) {
 					ex.printStackTrace();
@@ -117,23 +118,27 @@ public class Client extends JFrame {
 				}else{
 					dispose();
 					try {
-						String[] argNew = Arrays.copyOf(args, 15);
+						String[] argNew = Arrays.copyOf(args, 16);
 						//argNew[0] = args[0];
-						argNew[1]= "update";
-						argNew[2]=(String)table.getModel().getValueAt(row, 0);
-						argNew[3]=(String)table.getModel().getValueAt(row, 1);
-						argNew[4]=(String)table.getModel().getValueAt(row, 2);
-						argNew[5]=(String)table.getModel().getValueAt(row, 3);
-						argNew[6]=(String)table.getModel().getValueAt(row, 4);
-						argNew[7]=(String)table.getModel().getValueAt(row, 5);
-						argNew[8]=(String)table.getModel().getValueAt(row, 6);
-						argNew[9]=(String)table.getModel().getValueAt(row, 7);
-						argNew[10]=(String)table.getModel().getValueAt(row, 8);
-						argNew[11]=(String)table.getModel().getValueAt(row, 9);
-						argNew[12]=(String)table.getModel().getValueAt(row, 10);
-						argNew[13]=(String)table.getModel().getValueAt(row, 11);
-						argNew[14]=(String)table.getModel().getValueAt(row, 12);
-						new Client_Add(argNew).setVisible(true);
+						argNew[2]= "update";
+						argNew[3]=(String)table.getModel().getValueAt(row, 0);
+						argNew[4]=(String)table.getModel().getValueAt(row, 1);
+						argNew[5]=(String)table.getModel().getValueAt(row, 2);
+						argNew[6]=(String)table.getModel().getValueAt(row, 3);
+						argNew[7]=(String)table.getModel().getValueAt(row, 4);
+						argNew[8]=(String)table.getModel().getValueAt(row, 5);
+						argNew[9]=(String)table.getModel().getValueAt(row, 6);
+						argNew[10]=(String)table.getModel().getValueAt(row, 7);
+						argNew[11]=(String)table.getModel().getValueAt(row, 8);
+						argNew[12]=(String)table.getModel().getValueAt(row, 9);
+						argNew[13]=(String)table.getModel().getValueAt(row, 10);
+						argNew[14]=(String)table.getModel().getValueAt(row, 11);
+						argNew[15]=(String)table.getModel().getValueAt(row, 12);
+						//new Client_Add(argNew).setVisible(true);
+						Client_Add frame = new Client_Add(argNew);
+						frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+						frame.setVisible(true);
+						dispose();
 						
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -148,7 +153,9 @@ public class Client extends JFrame {
 		JButton btnBack = new JButton("Back");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Home(args).setVisible(true);
+				Home frame = new Home(args);
+				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				frame.setVisible(true);
 				dispose();
 			}
 		});
